@@ -1,6 +1,5 @@
 language: node_js
 env:
-  - IOJS=false
   - IOJS=1.1.0
 node_js:
   - "node"
