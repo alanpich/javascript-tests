@@ -1,7 +1,8 @@
 describe('scoping', function () {
   it('should correctly deal with scoping `this` back to the callee', function () {
     var mod = new Module(),
-        request;
+        request,
+        bind;
 
     request = function (callback) {
       return callback();
@@ -16,8 +17,23 @@ describe('scoping', function () {
     };
 
     Module.prototype.req = function() {
-      return request(this.method);
+      return request( bind(this.method, this) );
     };
+
+    /**
+    * Bind polyfill
+    *
+    *  Required b/c PhantomJs < 2.0 is stoopid and doesnt support Object.bind()
+    */
+    function bind (func, scope) {
+      if(typeof func.bind === 'function') {
+        return func.bind(scope);
+      } else {
+        return function () {
+          return func.apply(scope);
+        }
+      }
+    }
 
     expect(mod.req()).toBe('bar');
   });
