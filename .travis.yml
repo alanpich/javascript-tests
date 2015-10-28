@@ -1,7 +1,11 @@
 language: node_js
+env:
+  - IOJS=false
+  - IOJS=1.1.0
 node_js:
   - "node"
   - "iojs"
 before_script:
+  - curl -s https://gist.githubusercontent.com/sdepold/a7f17e4854d79b533cf1/raw/1a0acd18dfd0db0cd2d42efa00eae5095123daa2/travis.sh | bash
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
